@@ -1,12 +1,14 @@
 function debounce(callback, delay, immediate = false) {
-  let timeout;
+   let timeout;
+    let lastArgs;
 
     return function (...args) {
         const context = this;
-        
+        lastArgs = args;  // Store the latest arguments
+
         const later = () => {
             timeout = null;
-            if (!immediate) callback.apply(context, args);
+            if (!immediate) callback.apply(context, lastArgs);
         };
 
         const callNow = immediate && !timeout;
@@ -15,7 +17,7 @@ function debounce(callback, delay, immediate = false) {
         timeout = setTimeout(later, delay);
 
         if (callNow) {
-            callback.apply(context, args);
+            callback.apply(context, args);  // Call immediately with the current arguments
         }
     };
   }
